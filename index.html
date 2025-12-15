@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Validação de Formulário - DOM</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input {
+      padding: 8px;
+      width: 250px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    #mensagem {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Formulário de Cadastro</h2>
+
+  <form id="meuFormulario">
+    <label>Nome:</label>
+    <input type="text" id="nome">
+
+    <label>E-mail:</label>
+    <input type="text" id="email">
+
+    <label>Telefone:</label>
+    <input type="text" id="fone" placeholder="(##)#-####-####">
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  <div id="mensagem"></div>
+
+  <script>
+    document.getElementById("meuFormulario").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nome = document.getElementById("nome").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const fone = document.getElementById("fone").value.trim();
+      const mensagem = document.getElementById("mensagem");
+
+      mensagem.style.color = "red";
+      mensagem.textContent = "";
+
+      // Verifica campos vazios
+      if (nome === "" || email === "" || fone === "") {
+        mensagem.textContent = "Erro: Preencha todos os campos.";
+        return;
+      }
+
+      // Validação do nome
+      if (nome.length < 5 || nome.length > 40) {
+        mensagem.textContent = "Erro: O nome deve ter entre 5 e 40 caracteres.";
+        return;
+      }
+
+      // Validação do e-mail
+      if (!email.includes("@")) {
+        mensagem.textContent = "Erro: E-mail inválido. Deve conter @.";
+        return;
+      }
+
+      // Validação do telefone (##)#-####-####
+      const regexTelefone = /^\(\d{2}\)\d-\d{4}-\d{4}$/;
+      if (!regexTelefone.test(fone)) {
+        mensagem.textContent = "Erro: Telefone inválido. Use o formato (##)#-####-####.";
+        return;
+      }
+
+      // Sucesso
+      mensagem.style.color = "green";
+      mensagem.textContent = "Formulário enviado com sucesso!";
+    });
+  </script>
+
+</body>
+</html>
